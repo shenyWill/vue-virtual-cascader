@@ -1,17 +1,19 @@
 {
   "name": "vue-virtual-cascader",
-  "version": "0.1.0",
-  "private": true,
+  "version": "0.1.1",
+  "private": false,
+  "main": "dist/vue-virtual-cascader.umd.js",
+  "umd:main": "dist/vue-virtual-cascader.umd.min.js",
   "scripts": {
     "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build",
+    "build": "vue-cli-service build --target lib --name vue-virtual-cascader packages/index.js",
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
     "core-js": "^3.8.3",
+    "throttle-debounce": "^5.0.0",
     "vue": "^2.6.14",
-    "vue-router": "^3.5.1",
-    "vuex": "^3.6.2"
+    "vue-virtual-scroller": "^1.1.2"
   },
   "devDependencies": {
     "@babel/core": "^7.12.16",
@@ -21,10 +23,13 @@
     "@vue/cli-plugin-router": "~5.0.0",
     "@vue/cli-plugin-vuex": "~5.0.0",
     "@vue/cli-service": "~5.0.0",
+    "babel-plugin-component": "^1.1.1",
+    "element-ui": "^2.15.13",
     "eslint": "^7.32.0",
     "eslint-plugin-vue": "^8.0.3",
     "less": "^4.0.0",
     "less-loader": "^8.0.0",
+    "mockjs": "^1.1.0",
     "vue-template-compiler": "^2.6.14"
   }
 }
