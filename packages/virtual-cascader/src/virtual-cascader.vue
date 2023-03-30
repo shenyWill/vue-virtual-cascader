@@ -2,21 +2,20 @@
   <div
       ref="reference"
       :class="[
-          'elp-cascader',
+          'virtual-cascader',
           { 'is-disabled': isDisabled },
-          realSize && `elp-cascader--${realSize}`
+          size && `virtual-cascader--${size}`
       ]"
       v-clickoutside="() => toggleDropDownVisible(false)"
-      @keydown="handleKeyDown"
-      @mouseenter="inputHover = true"
-      @mouseleave="inputHover = false"
-      @click="() => toggleDropDownVisible(readonly ? undefined : true)">
+      @mouseover="() => inputHover = true"
+      @mouseleave="() => inputHover = false"
+      @click="() => toggleDropDownVisible(true)">
     <!--  eslint-disable  -->
     <el-input
         ref="input"
         v-model="multiple ? presentText : inputValue"
-        :size="realSize"
-        :readonly="readonly"
+        :size="size"
+        :readonly="true"
         :disabled="isDisabled"
         :validate-event="false"
         :placeholder="placeholder"
@@ -56,16 +55,6 @@
           @close="deleteTag(index)">
         <span>{{ tag.text }}</span>
       </el-tag>
-      <input
-          v-if="filterable && !isDisabled"
-          v-model.trim="inputValue"
-          type="text"
-          class="elp-cascader__search-input"
-          :placeholder="presentTags.length ? '' : placeholder"
-          @input="e => handleInput(inputValue, e)"
-          @click.stop="toggleDropDownVisible(true)"
-          @keydown.delete="handleDelete"
-      />
     </div>
 
     <transition name="el-zoom-in-top" @after-leave="handleDropdownLeave">
@@ -77,6 +66,17 @@
               'el-popper',
                popperClass
           ]">
+          <div class="virtual-cascader__search">
+            <input
+              v-if="filterable && !isDisabled"
+              v-model.trim="searchValue"
+              type="text"
+              class="virtual-cascader__search-input"
+              placeholder="请输入"
+              @input="e => handleInput(searchValue, e)"
+            />
+            <i class="virtual-cascader__search-icon el-input__icon el-icon-search"></i>
+          </div>
         <elp-cascader-panel
             ref="panel"
             v-show="!filtering"
@@ -139,7 +139,7 @@ import { addResizeListener, removeResizeListener } from 'element-ui/src/utils/re
 
 import 'virtual-cascader/packages/theme/cascader.less'
 import ElpCascaderPanel from 'virtual-cascader/packages/cascader-panel'
-import { MigratingProps, PopperMixin, InputSizeMap } from './constant'
+import { MigratingProps, PopperMixin, InputSizeMap, VirtualProps } from './constant'
 import { debounce } from 'throttle-debounce';
 
 const { keys: KeyCode } = AriaUtils
@@ -149,59 +149,13 @@ export default {
 
   directives: { Clickoutside },
 
-  mixins: [PopperMixin, Emitter, Migrating],
-
-  inject: {
-    elForm: {
-      default: ''
-    },
-    elFormItem: {
-      default: ''
-    }
-  },
+  mixins: [PopperMixin, Emitter, Migrating, VirtualProps],
 
   components: {
     ElTag,
     ElInput,
     Scrollbar,
     ElpCascaderPanel
-  },
-
-  props: {
-    value: {},
-    options: Array,
-    props: Object,
-    size: String,
-    placeholder: {
-      type: String,
-      default: '请选择'
-    },
-    disabled: Boolean,
-    clearable: Boolean,
-    filterable: Boolean,
-    filterMethod: Function,
-    separator: {
-      type: String,
-      default: ' / '
-    },
-    showAllLevels: {
-      type: Boolean,
-      default: true
-    },
-    collapseTags: Boolean,
-    debounce: {
-      type: Number,
-      default: 300
-    },
-    beforeFilter: {
-      type: Function,
-      default: () => (() => {})
-    },
-    popperClass: String,
-    emptyText: {
-      type: String,
-      default: '暂无数据'
-    }
   },
 
   data () {
@@ -211,27 +165,24 @@ export default {
       checkedNodes: [],
       filtering: false,
       inputValue: null,
+      searchValue: null,
       presentText: null,
       inputHover: false,
       pressDeleteCount: 0,
-      inputInitialHeight: 0,
-      dropDownVisible: false,
+      inputInitialHeight: 0, // root最外层virtual-cascader实际高度
+      dropDownVisible: false, // 是否处于弹窗层显示状态
       checkedValue: this.value || null
     }
   },
 
   computed: {
-    realSize () {
-      const _elFormItemSize = (this.elFormItem || {}).elFormItemSize
-      return this.size || _elFormItemSize || (this.$ELEMENT || {}).size
-    },
     tagSize () {
-      return ['small', 'mini'].indexOf(this.realSize) > -1
+      return ['small', 'mini'].indexOf(this.size) > -1
           ? 'mini'
           : 'small'
     },
     isDisabled () {
-      return this.disabled || (this.elForm || {}).disabled
+      return this.disabled
     },
     config () {
       const config = this.props || {}
@@ -255,9 +206,6 @@ export default {
     },
     leafOnly () {
       return !this.config.checkStrictly
-    },
-    readonly () {
-      return !this.filterable || this.multiple
     },
     clearBtnVisible () {
       if (!this.clearable || this.isDisabled || this.filtering || !this.inputHover) {
@@ -305,10 +253,10 @@ export default {
       },
       deep: true
     },
-    presentText (val) {
-      // Fix: the first search term cannot be retained when 'multiple'
-      if (!this.multiple) this.inputValue = val
-    },
+    // presentText (val) {
+    //   // Fix: the first search term cannot be retained when 'multiple'
+    //   if (!this.multiple) this.inputValue = val
+    // },
     presentTags (val, oldVal) {
       if (this.multiple && (val.length || oldVal.length)) {
         this.$nextTick(this.updateStyle)
@@ -322,22 +270,21 @@ export default {
   mounted () {
     const { input } = this.$refs
     if (input && input.$el) {
-      this.inputInitialHeight = input.$el.offsetHeight || InputSizeMap[this.realSize] || 40
+      this.inputInitialHeight = input.$el.offsetHeight || InputSizeMap.get(this.size) || 40
     }
-
     if (!isEmpty(this.value)) {
+      // 如果数据不为空，回填
       this.computePresentContent()
     }
 
     this.filterHandler = debounce(this.debounce, () => {
-      const { inputValue } = this
-
-      if (!inputValue) {
+      const { searchValue } = this
+      if (!searchValue) {
         this.filtering = false
         return
       }
 
-      const before = this.beforeFilter(inputValue)
+      const before = this.beforeFilter(searchValue)
       if (before && before.then) {
         before.then(this.getSuggestions)
       } else if (before !== false) {
@@ -346,7 +293,7 @@ export default {
         this.filtering = false
       }
     })
-
+    // 根据ResizeObserver观察root的变动，使popover跟随变动
     addResizeListener(this.$el, this.updateStyle)
   },
 
@@ -369,12 +316,14 @@ export default {
     },
     toggleDropDownVisible (visible) {
       if (this.isDisabled) return
-
       const { dropDownVisible } = this
       const { input } = this.$refs
       visible = isDef(visible) ? visible : !dropDownVisible
+      if (!visible) {
+        this.searchValue = '';
+      }
       if (visible !== dropDownVisible) {
-        this.dropDownVisible = visible
+        this.dropDownVisible = visible;
         if (visible) {
           this.$nextTick(() => {
             this.updatePopper()
@@ -389,22 +338,6 @@ export default {
       this.filtering = false
       this.inputValue = this.presentText
     },
-    handleKeyDown (event) {
-      switch (event.keyCode) {
-        case KeyCode.enter:
-          this.toggleDropDownVisible()
-          break
-        case KeyCode.down:
-          this.toggleDropDownVisible(true)
-          this.focusFirstNode()
-          event.preventDefault()
-          break
-        case KeyCode.esc:
-        case KeyCode.tab:
-          this.toggleDropDownVisible(false)
-          break
-      }
-    },
     handleFocus (e) {
       this.$emit('focus', e)
     },
@@ -413,7 +346,6 @@ export default {
     },
     handleInput (val, event) {
       !this.dropDownVisible && this.toggleDropDownVisible(true)
-
       if (event && event.isComposing) return
       if (val) {
         this.filterHandler()
@@ -442,7 +374,7 @@ export default {
         if (filtering && suggestionPanel) {
           firstNode = suggestionPanel.$el.querySelector('.elp-cascader__suggestion-item')
         } else {
-          const firstMenu = popper.querySelector('.elp-cascader-menu')
+          const firstMenu = popper.querySelector('.virtual-cascader-menu')
           firstNode = firstMenu.querySelector('.elp-cascader-node[tabindex="-1"]')
         }
 
@@ -453,7 +385,6 @@ export default {
       })
     },
     computePresentContent () {
-      // nextTick is required, because checked nodes may not change right now
       this.$nextTick(() => {
         if (this.config.multiple) {
           this.computePresentTags()
@@ -518,7 +449,7 @@ export default {
       const suggestions = this.panel.getFlattedNodes(this.leafOnly).filter(node => {
         if (node.isDisabled) return false
         node.text = node.getText(this.showAllLevels, this.separator) || ''
-        return filterMethod(node, this.inputValue)
+        return filterMethod(node, this.searchValue)
       })
 
       if (this.multiple) {

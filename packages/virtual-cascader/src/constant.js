@@ -1,4 +1,5 @@
-import Popper from 'element-ui/src/utils/vue-popper'
+// import Popper from 'element-ui/src/utils/vue-popper'
+import Popper from './vue-popper.js'
 
 const MigratingProps = {
   expandTrigger: {
@@ -12,6 +13,45 @@ const MigratingProps = {
   hoverThreshold: {
     type: Number,
     newProp: 'hoverThreshold'
+  }
+}
+
+const VirtualProps = {
+  props: {
+    value: {},
+    options: Array,
+    props: Object,
+    size: String,
+    placeholder: {
+      type: String,
+      default: '请选择'
+    },
+    disabled: Boolean,
+    clearable: Boolean,
+    filterable: Boolean,
+    filterMethod: Function,
+    separator: {
+      type: String,
+      default: ' / '
+    },
+    showAllLevels: {
+      type: Boolean,
+      default: true
+    },
+    collapseTags: Boolean, // 是否则折叠选中的tag
+    debounce: {
+      type: Number,
+      default: 300
+    },
+    beforeFilter: {
+      type: Function,
+      default: () => (() => { })
+    },
+    popperClass: String,
+    emptyText: {
+      type: String,
+      default: '暂无数据'
+    }
   }
 }
 
@@ -36,14 +76,16 @@ const PopperMixin = {
   beforeDestroy: Popper.beforeDestroy
 }
 
-const InputSizeMap = {
-  medium: 36,
-  small: 32,
-  mini: 28
-}
+const InputSizeMap = new Map([
+  ['medium', 36],
+  ['small', 32],
+  ['mini', 28]
+])
+
 
 export {
   MigratingProps,
+  VirtualProps,
   PopperMixin,
   InputSizeMap
 }

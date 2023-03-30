@@ -1,5 +1,5 @@
 <template>
-  <div class="elp-cascader-menu">
+  <div class="virtual-cascader-menu">
     <div class="elp-cascader-menu__wrap elp-cascader-menu__list">
       <div class="elp-search-check">
         <div v-if="labelAndCheckAllVisible" class="elp-search-check__check">
@@ -10,16 +10,6 @@
             :indeterminate="menuCheckState.indeterminate"
             @change="onMenuCheck"
           >全选</el-checkbox>
-        </div>
-        <div v-if="searchVisible" style="padding: 5px 20px">
-          <el-input
-            clearable
-            v-model.trim="keyWordsTemp"
-            placeholder="请输入内容"
-            size="small"
-            suffix-icon="el-icon-search"
-            @input="handleSearchInput"
-          />
         </div>
       </div>
       <div v-if="isEmpty" class="elp-cascader-menu__empty-text">
@@ -42,7 +32,6 @@
           @expand="isHover && handleExpand"
         />
       </recycle-scroller>
-      
       <!-- <svg v-if="isHover" ref="hoverZone" class="elp-cascader-menu__hover-zone" /> -->
     </div>
   </div>
@@ -51,12 +40,10 @@
 <script>
 import 'vue-virtual-scroller/dist/vue-virtual-scroller.css'
 import { RecycleScroller } from 'vue-virtual-scroller'
-import ElInput from 'element-ui/packages/input'
 import { coerceTruthyValueToArray } from 'element-ui/src/utils/util'
 
 import CascaderNode from './cascader-node.vue'
 import ElCheckbox from 'element-ui/packages/checkbox'
-import {debounce} from 'throttle-debounce'
 
 export default {
   name: 'ElpCascaderMenu',
@@ -66,7 +53,6 @@ export default {
   components: {
     RecycleScroller,
     CascaderNode,
-    ElInput,
     ElCheckbox
   },
 
@@ -87,7 +73,6 @@ export default {
       activeNode: null,
       hoverTimer: null,
       searchKey: '',
-      keyWordsTemp: '',
       menuCheckState: {
         checked: false,
         indeterminate: false
@@ -117,19 +102,14 @@ export default {
       return _labels[this.index]
     },
     checkAllVisible () {
-      console.log(this.config.checkStrictly, this.config.lazyMultiCheck);
       return this.config.multiple && !this.config.lazyMultiCheck && this.config.checkAll
     },
     labelAndCheckAllVisible () {
       return this.menuLabel || this.checkAllVisible
     },
-    searchVisible () {
-      return this.config.panelSearch
-    },
     scrollHeight () {
       const labelAndCheckAllHeight = this.labelAndCheckAllVisible ? 30 : 0
-      const searchHeight = this.searchVisible ? 42 : 0
-      return `calc(100% - ${ labelAndCheckAllHeight + searchHeight }px)`
+      return `calc(100% - ${ labelAndCheckAllHeight }px)`
     }
   },
   watch: {
@@ -196,10 +176,6 @@ export default {
       this.filterNodes.forEach(node => { !node.isDisabled && node.doCheck(checked) })
       this.panel.calculateMultiCheckedValue()
     },
-    handleSearchInput: debounce(300, function (searchWords = '') {
-      this.searchKey = searchWords.trim()
-      this.setMenuCheckedVal()
-    })
   }
 }
 </script>
