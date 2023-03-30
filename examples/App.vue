@@ -1,24 +1,14 @@
 <template>
   <div id="app">
-    <VirtualCascader v-model="value" :props="props" :options="options" size="small" collapse-tags filterable clearable style="width: 400px" />
-    <!-- <VirtualCascader v-model="value" :props="props" :options="options" size="small" collapse-tags filterable clearable style="width: 400px" />
-    <VirtualCascader v-model="value" :props="props" :options="options" size="small" collapse-tags filterable clearable style="width: 400px" />
-    <VirtualCascader v-model="value" :props="props" :options="options" size="small" collapse-tags filterable clearable style="width: 400px" />
-    <VirtualCascader v-model="value" :props="props" :options="options" size="small" collapse-tags filterable clearable style="width: 400px" />
-    <VirtualCascader v-model="value" :props="props" :options="options" size="small" collapse-tags filterable clearable style="width: 400px" />
-    <VirtualCascader v-model="value" :props="props" :options="options" size="small" collapse-tags filterable clearable style="width: 400px" />
-    <VirtualCascader v-model="value" :props="props" :options="options" size="small" collapse-tags filterable clearable style="width: 400px" />
-    <VirtualCascader v-model="value" :props="props" :options="options" size="small" collapse-tags filterable clearable style="width: 400px" />
-    <VirtualCascader v-model="value" :props="props" :options="options" size="small" collapse-tags filterable clearable style="width: 400px" /> -->
+    <VirtualCascader v-model="value" :props="props" :options="options" size="mini" collapse-tags filterable clearable style="width: 400px" />
   </div>
 </template>
 
 <script>
 import Mock from 'mockjs'
-// import Cascader from './../dist/vue-virtual-cascader.umd.js';
+// import Cascader from './../dist/vue-virtual-cascader.umd.min.js';
 // import './../dist/vue-virtual-cascader.css';
 import Cascader from 'virtual-cascader/packages';
-// console.log(Cascader);
 const { VirtualCascader } = Cascader;
 
 
@@ -49,8 +39,18 @@ export default {
       ]
     })
     return {
-      value: [],
-      options: _mock.array,
+      // value: [['zhangsan', 'lisi']],
+      value: [['zhangsan', 'lisi']],
+      options: [..._mock.array, {
+        label: '张三',
+        value: 'zhangsan',
+        children: [
+          {
+            label: 'lisi',
+            value: 'lisi'
+          }
+        ]
+      }],
       props: {
         checkAll: true,
         multiple: true,
@@ -64,7 +64,6 @@ export default {
 </script>
 
 <style lang="less">
-@import url('./../dist/vue-virtual-cascader.css');
 #app {
   display: grid;
   place-items: flex-start;

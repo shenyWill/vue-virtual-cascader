@@ -1,3 +1,4 @@
+@import url("./vars.less");
 .vue-recycle-scroller {
   &::-webkit-scrollbar {
     width: 6px;
@@ -57,7 +58,7 @@
 }
 
 .el-checkbox.is-bordered.is-checked {
-  border-color: #409EFF
+  border-color: @theme-color
 }
 
 .el-checkbox.is-bordered.is-disabled {
@@ -167,8 +168,8 @@
 }
 
 .el-checkbox__input.is-checked .el-checkbox__inner, .el-checkbox__input.is-indeterminate .el-checkbox__inner {
-  background-color: #409EFF;
-  border-color: #409EFF
+  background-color: @theme-color;
+  border-color: @theme-color
 }
 
 .el-checkbox__input.is-disabled + span.el-checkbox__label {
@@ -182,11 +183,11 @@
 }
 
 .el-checkbox__input.is-checked + .el-checkbox__label {
-  color: #409EFF
+  color: @theme-color
 }
 
 .el-checkbox__input.is-focus .el-checkbox__inner {
-  border-color: #409EFF
+  border-color: @theme-color
 }
 
 .el-checkbox__input.is-indeterminate .el-checkbox__inner::before {
@@ -222,7 +223,7 @@
 }
 
 .el-checkbox__inner:hover {
-  border-color: #409EFF
+  border-color: @theme-color
 }
 
 .el-checkbox__inner::after {
@@ -297,7 +298,7 @@
 }
 
 .el-checkbox-button__inner:hover {
-  color: #409EFF
+  color: @theme-color
 }
 
 .el-checkbox-button__inner [class*=el-icon-] {
@@ -329,14 +330,14 @@
 
 .el-checkbox-button.is-checked .el-checkbox-button__inner {
   color: #FFF;
-  background-color: #409EFF;
-  border-color: #409EFF;
+  background-color: @theme-color;
+  border-color: @theme-color;
   -webkit-box-shadow: -1px 0 0 0 #8cc5ff;
   box-shadow: -1px 0 0 0 #8cc5ff
 }
 
 .el-checkbox-button.is-checked:first-child .el-checkbox-button__inner {
-  border-left-color: #409EFF
+  border-left-color: @theme-color
 }
 
 .el-checkbox-button.is-disabled .el-checkbox-button__inner {
@@ -361,7 +362,7 @@
 }
 
 .el-checkbox-button.is-focus .el-checkbox-button__inner {
-  border-color: #409EFF
+  border-color: @theme-color
 }
 
 .el-checkbox-button:last-child .el-checkbox-button__inner {
@@ -426,7 +427,7 @@
 }
 
 .el-radio.is-bordered.is-checked {
-  border-color: #409EFF
+  border-color: @theme-color
 }
 
 .el-radio.is-bordered.is-disabled {
@@ -508,8 +509,8 @@
 }
 
 .el-radio__input.is-checked .el-radio__inner {
-  border-color: #409EFF;
-  background: #409EFF
+  border-color: @theme-color;
+  background: @theme-color
 }
 
 .el-radio__input.is-checked .el-radio__inner::after {
@@ -518,11 +519,11 @@
 }
 
 .el-radio__input.is-checked + .el-radio__label {
-  color: #409EFF
+  color: @theme-color
 }
 
 .el-radio__input.is-focus .el-radio__inner {
-  border-color: #409EFF
+  border-color: @theme-color
 }
 
 .el-radio__inner {
@@ -537,7 +538,7 @@
 }
 
 .el-radio__inner:hover {
-  border-color: #409EFF
+  border-color: @theme-color
 }
 
 .el-radio__inner::after {
@@ -570,8 +571,8 @@
 }
 
 .el-radio:focus:not(.is-focus):not(:active):not(.is-disabled) .el-radio__inner {
-  -webkit-box-shadow: 0 0 2px 2px #409EFF;
-  box-shadow: 0 0 2px 2px #409EFF
+  -webkit-box-shadow: 0 0 2px 2px @theme-color;
+  box-shadow: 0 0 2px 2px @theme-color
 }
 
 .el-radio__label {
@@ -662,19 +663,20 @@
   border-radius: 4px
 }
 
-.elp-cascader-menu {
+.virtual-cascader-menu {
   min-width: 180px;
+  width: 100%;
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
   color: #606266;
   border-right: solid 1px #E4E7ED
 }
 
-.elp-cascader-menu:last-child {
+.virtual-cascader-menu:last-child {
   border-right: none
 }
 
-.elp-cascader-menu:last-child .elp-cascader-node {
+.virtual-cascader-menu:last-child .elp-cascader-node {
   padding-right: 20px
 }
 
@@ -734,7 +736,7 @@
 }
 
 .elp-cascader-node.in-active-path, .elp-cascader-node.is-active, .elp-cascader-node.is-selectable.in-checked-path {
-  color: #409EFF;
+  color: @theme-color;
   font-weight: 700
 }
 
