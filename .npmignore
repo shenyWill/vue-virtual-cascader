@@ -7,3 +7,6 @@ public
 babel.config.js
 jsconfig.json
 vue.config.js
+vue-virtual-cascader.common.js
+vue-virtual-cascader.umd.js
+demo.htmltml

@@ -6,9 +6,9 @@
 
 <script>
 import Mock from 'mockjs'
-// import Cascader from './../dist/vue-virtual-cascader.umd.min.js';
-// import './../dist/vue-virtual-cascader.css';
-import Cascader from 'virtual-cascader/packages';
+import Cascader from './../dist/vue-virtual-cascader.umd.min.js';
+import './../dist/vue-virtual-cascader.css';
+// import Cascader from 'virtual-cascader/packages';
 const { VirtualCascader } = Cascader;
 
 
@@ -54,9 +54,9 @@ export default {
       props: {
         checkAll: true,
         multiple: true,
-        selectWithExpand: false,
-        panelSearch: true,
-        panelLabels: []
+        selectWithExpand: true,
+        panelLabels: [],
+        checkStrictly: false,
       },
     }
   },

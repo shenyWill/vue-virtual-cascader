@@ -20,23 +20,39 @@ module.exports = defineConfig({
       filename: 'index.html',
     }
   },
-  // configureWebpack: {
-  //   entry: './packages/index.js',
-  //   output: {
-  //     filename: 'vue-virtual-cascader.[name].js',
-  //     library: 'VueVirtualCascader',
-  //     libraryTarget: 'umd',
-  //   },
-  //   optimization: {
-  //     splitChunks: {
-  //       cacheGroups: {
-  //         vendor: {
-  //           test: /[\\/]node_modules[\\/]/,
-  //           name: 'vendors',
-  //           chunks: 'all',
-  //         },
-  //       },
-  //     },
-  //   },
-  // },
+  configureWebpack: config => {
+    // entry: './packages/index.js',
+    // output: {
+    //   filename: 'vue-virtual-cascader.[name].js',
+    //   library: 'VueVirtualCascader',
+    //   libraryTarget: 'umd',
+    // },
+    // optimization: {
+    //   splitChunks: {
+    //     cacheGroups: {
+    //       vendor: {
+    //         test: /[\\/]node_modules[\\/]element-ui/,
+    //         name: 'element',
+    //         chunks: 'all',
+    //       },
+    //     },
+    //   },
+    // },
+      if (config.mode === 'production') {
+        config.externals = {
+          'element-ui': {
+            commonjs: 'element-ui',
+            commonjs2: 'element-ui',
+            amd: 'element-ui',
+            root: '_',
+          },
+          'vue-virtual-scroller': {
+            commonjs: 'vue-virtual-scroller',
+            commonjs2: 'vue-virtual-scroller',
+            amd: 'vue-virtual-scroller',
+            root: '_',
+          }
+        }
+      }
+  },
 })
