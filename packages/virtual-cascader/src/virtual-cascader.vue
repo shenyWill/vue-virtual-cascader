@@ -21,8 +21,7 @@
         :placeholder="placeholder"
         :class="{ 'is-focus': dropDownVisible }"
         @focus="handleFocus"
-        @blur="handleBlur"
-        @input="handleInput">
+        @blur="handleBlur">
       <template slot="suffix">
         <i
             v-if="clearBtnVisible"
@@ -92,16 +91,16 @@
             @close="toggleDropDownVisible(false)"
         />
         <scrollbar
-            ref="suggestionPanel"
+            ref="filterPanel"
             v-if="filterable"
             v-show="filtering"
             tag="ul"
-            class="elp-cascader__suggestion-panel"
-            view-class="elp-cascader__suggestion-list"
+            class="virtual-cascader__filter-panel"
+            view-class="virtual-cascader__filter-list"
             @keydown.native="handleSuggestionKeyDown">
-          <template v-if="suggestions.length">
+          <template v-if="filterList.length">
             <li
-                v-for="(item, index) in suggestions"
+                v-for="(item, index) in filterList"
                 :key="item.uid"
                 :tabindex="-1"
                 :class="[
@@ -160,7 +159,7 @@ export default {
 
   data () {
     return {
-      suggestions: [],
+      filterList: [], // 过滤后的数据列表
       presentTags: [],
       checkedNodes: [],
       filtering: false,
@@ -198,12 +197,12 @@ export default {
           config[newProp] = oldValue
         }
       })
-
       return config
     },
     multiple () {
       return this.config.multiple
     },
+    // 是否父子节点取消选中关联，从而达到选择任意一项的目的（true: 关联， false: 不关联）
     leafOnly () {
       return !this.config.checkStrictly
     },
@@ -286,9 +285,9 @@ export default {
 
       const before = this.beforeFilter(searchValue)
       if (before && before.then) {
-        before.then(this.getSuggestions)
+        before.then(this.getFilterList)
       } else if (before !== false) {
-        this.getSuggestions()
+        this.getFilterList()
       } else {
         this.filtering = false
       }
@@ -346,6 +345,7 @@ export default {
     },
     handleInput (val, event) {
       !this.dropDownVisible && this.toggleDropDownVisible(true)
+      // 如果输入的是中文或者日文，输入完成后再做筛选
       if (event && event.isComposing) return
       if (val) {
         this.filterHandler()
@@ -368,11 +368,11 @@ export default {
     focusFirstNode () {
       this.$nextTick(() => {
         const { filtering } = this
-        const { popper, suggestionPanel } = this.$refs
+        const { popper, filterPanel } = this.$refs
         let firstNode = null
 
-        if (filtering && suggestionPanel) {
-          firstNode = suggestionPanel.$el.querySelector('.elp-cascader__suggestion-item')
+        if (filtering && filterPanel) {
+          firstNode = filterPanel.$el.querySelector('.elp-cascader__suggestion-item')
         } else {
           const firstMenu = popper.querySelector('.virtual-cascader-menu')
           firstNode = firstMenu.querySelector('.elp-cascader-node[tabindex="-1"]')
@@ -439,14 +439,15 @@ export default {
       this.checkedNodes = checkedNodes
       this.presentTags = tags
     },
-    getSuggestions () {
+    // 获取过滤的数据列表
+    getFilterList () {
       let { filterMethod } = this
 
       if (!isFunction(filterMethod)) {
         filterMethod = (node, keyword) => node.text.includes(keyword)
       }
-
-      const suggestions = this.panel.getFlattedNodes(this.leafOnly).filter(node => {
+      console.log(this.panel.getFlattedNodes(this.leafOnly))
+      const filterList = this.panel.getFlattedNodes(this.leafOnly).filter(node => {
         if (node.isDisabled) return false
         node.text = node.getText(this.showAllLevels, this.separator) || ''
         return filterMethod(node, this.searchValue)
@@ -457,13 +458,13 @@ export default {
           tag.hitState = false
         })
       } else {
-        suggestions.forEach(node => {
+        filterList.forEach(node => {
           node.checked = isEqual(this.checkedValue, node.getValueByOption())
         })
       }
 
       this.filtering = true
-      this.suggestions = suggestions
+      this.filterList = filterList
       this.$nextTick(this.updatePopper)
     },
     handleSuggestionKeyDown (event) {
@@ -506,7 +507,7 @@ export default {
     },
     handleSuggestionClick (index) {
       const { multiple } = this
-      const targetNode = this.suggestions[index]
+      const targetNode = this.filterList[index]
 
       if (multiple) {
         const { checked } = targetNode
@@ -527,16 +528,17 @@ export default {
       const { $el, inputInitialHeight } = this
       if (this.$isServer || !$el) return
 
-      const { suggestionPanel } = this.$refs
+      const { filterPanel } = this.$refs
       const inputInner = $el.querySelector('.el-input__inner')
 
       if (!inputInner) return
 
       const tags = $el.querySelector('.elp-cascader__tags')
-      let suggestionPanelEl = null
+      let filterPanelEl = null
 
-      if (suggestionPanel && (suggestionPanelEl = suggestionPanel.$el)) {
-        const suggestionList = suggestionPanelEl.querySelector('.elp-cascader__suggestion-list')
+      if (filterPanel && (filterPanelEl = filterPanel.$el)) {
+        // 搜索时候的panel最小宽度等同root的宽度
+        const suggestionList = filterPanelEl.querySelector('.virtual-cascader__filter-list')
         suggestionList.style.minWidth = inputInner.offsetWidth + 'px'
       }
 

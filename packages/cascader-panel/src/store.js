@@ -23,7 +23,9 @@ export default class Store {
   initNodes (data) {
     data = coerceTruthyValueToArray(data)
     this.nodes = data.map(nodeData => new Node(nodeData, this.config))
+    // 打平的nodes集合
     this.flattedNodes = this.getFlattedNodes(false, false)
+    // 叶子nodes集合，最后一层的叶子
     this.leafNodes = this.getFlattedNodes(true, false)
   }
 

@@ -1,5 +1,4 @@
-// import Popper from 'element-ui/src/utils/vue-popper'
-import Popper from './vue-popper.js'
+import Popper from 'element-ui/src/utils/vue-popper'
 
 const MigratingProps = {
   expandTrigger: {
