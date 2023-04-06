@@ -1,17 +1,15 @@
 import { coerceTruthyValueToArray, valueEquals } from 'element-ui/src/utils/util'
 import Node from './node'
 
-const flatNodes = (data, leafOnly, lazyMultiCheck) => {
-  return data.reduce((res, node) => {
-    if (node.isLeaf) {
-      res.push(node)
-    } else {
-      (!leafOnly || lazyMultiCheck) && res.push(node)
-      res = res.concat(flatNodes(node.children, leafOnly, lazyMultiCheck))
-    }
-    return res
-  }, [])
-}
+const flatNodes = (data, leafOnly, lazyMultiCheck) => data.reduce((result, node) => {
+  if (node.isLeaf) {
+    result.push(node)
+  } else {
+    (!leafOnly || lazyMultiCheck) && result.push(node)
+    result = result.concat(flatNodes(node.children, leafOnly, lazyMultiCheck))
+  }
+  return result
+}, [])
 
 export default class Store {
 

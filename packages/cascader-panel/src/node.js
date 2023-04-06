@@ -8,9 +8,9 @@ export default class Node {
   constructor (data, config, parentNode) {
     this.data = data
     this.config = config
+    this.uid = uid++
     this.parent = parentNode || null
     this.level = !this.parent ? 1 : this.parent.level + 1
-    this.uid = uid++
 
     this.initState()
     this.initChildren()
@@ -18,7 +18,6 @@ export default class Node {
 
   initState () {
     const { value: valueKey, label: labelKey } = this.config
-
     this.value = this.data[valueKey]
     this.label = this.data[labelKey]
     this.pathNodes = this.calculatePathNodes()
@@ -45,7 +44,7 @@ export default class Node {
     return data[disabledKey] ||
       !checkStrictly && parent && parent.isDisabled
   }
-
+  // 是否是叶子(最后一层)
   get isLeaf () {
     const { data, loaded, hasChildren, children } = this
     const { lazy, leaf: leafKey } = this.config

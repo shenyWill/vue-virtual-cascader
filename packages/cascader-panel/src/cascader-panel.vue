@@ -1,11 +1,10 @@
 <template>
   <div
       :class="[
-          'elp-cascader-panel',
+          'virtual-cascader-panel',
           border && 'is-bordered'
        ]"
-      v-if="visible"
-      @keydown="handleKeyDown">
+      v-show="visible">
     <cascader-menu
         ref="menu"
         v-for="(menu, index) in menus"
@@ -13,14 +12,11 @@
         :nodes="menu"
         :index="index"
     />
-    
   </div>
 </template>
 
 <script>
-// element-ui
 import merge from 'element-ui/src/utils/merge'
-import AriaUtils from 'element-ui/src/utils/aria-utils'
 import scrollIntoView from 'element-ui/src/utils/scroll-into-view'
 import {
   isEqual,
@@ -32,18 +28,10 @@ import {
 import Store from './store'
 import { DefaultProps } from './constant'
 import CascaderMenu from './cascader-menu'
-import {
-  focusNode,
-  checkNode,
-  getSibling,
-  getMenuIndex
-} from './utils'
 import 'virtual-cascader/packages/theme/cascader-panel.less'
 
-const { keys: KeyCode } = AriaUtils
-
 export default {
-  name: 'ElpCascaderPanel',
+  name: 'VirtualCascaderPanel',
 
   components: { CascaderMenu },
 
@@ -185,47 +173,6 @@ export default {
         return checkedNode ? checkedNode.pathNodes : []
       })
     },
-    handleKeyDown (e) {
-      const { target, keyCode } = e
-
-      switch (keyCode) {
-        case KeyCode.up: {
-          const prev = getSibling(target, -1)
-          focusNode(prev)
-          break
-        }
-        case KeyCode.down: {
-          const next = getSibling(target, 1)
-          focusNode(next)
-          break
-        }
-        case KeyCode.left: {
-          const preMenu = this.$refs.menu[getMenuIndex(target) - 1]
-          if (preMenu) {
-            const expandedNode = preMenu.$el.querySelector('.elp-cascader-node[aria-expanded="true"]')
-            focusNode(expandedNode)
-          }
-          break
-        }
-        case KeyCode.right: {
-          const nextMenu = this.$refs.menu[getMenuIndex(target) + 1]
-          if (nextMenu) {
-            const firstNode = nextMenu.$el.querySelector('.elp-cascader-node[tabindex="-1"]')
-            focusNode(firstNode)
-          }
-          break
-        }
-        case KeyCode.enter:
-          checkNode(target)
-          break
-        case KeyCode.esc:
-        case KeyCode.tab:
-          this.$emit('close')
-          break
-        default:
-          return
-      }
-    },
     handleExpand (node, silent) {
       const { activePath } = this
       const { level } = node
@@ -306,6 +253,7 @@ export default {
     calculateMultiCheckedValue () {
       this.checkedValue = this.getCheckedNodes(this.leafOnly).map(node => node.getValueByOption())
     },
+    // 虚拟滚动时，还没有渲染出来activeNode，所以无效
     scrollIntoView () {
       if (this.$isServer) return
 
