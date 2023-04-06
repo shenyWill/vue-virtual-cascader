@@ -39,7 +39,7 @@ export default {
       ]
     })
     return {
-      // value: [['zhangsan', 'lisi']],
+      // value: ['zhangsan', 'lisi'],
       value: [['zhangsan', 'lisi']],
       options: [..._mock.array, {
         label: '张三',

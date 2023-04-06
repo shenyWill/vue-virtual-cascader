@@ -36,7 +36,7 @@ const VirtualProps = {
     showAllLevels: {
       type: Boolean,
       default: true
-    },
+    }, // 是否展示所有层级的label
     collapseTags: Boolean, // 是否则折叠选中的tag
     debounce: {
       type: Number,
