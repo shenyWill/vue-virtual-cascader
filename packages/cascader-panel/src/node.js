@@ -96,11 +96,10 @@ export default class Node {
   }
 
   broadcast (event, ...args) {
-    const handlerName = `onParent${capitalize(event)}`
+    const handlerName = `onParent${capitalize(event)}` // 'onParentCheck || onChildCheck'
 
     this.children.forEach(child => {
       if (child) {
-        // bottom up
         child.broadcast(event, ...args)
         child[handlerName] && child[handlerName](...args)
       }
@@ -131,7 +130,7 @@ export default class Node {
 
     this.setCheckState(checked)
   }
-
+  // 设置当前node的check状态以及是否全选(indeterminate)状态
   setCheckState (checked) {
     const totalNum = this.children.length
     const checkedNum = this.children.reduce((c, p) => {
@@ -152,10 +151,11 @@ export default class Node {
 
   doCheck (checked) {
     if (this.checked !== checked) {
+      // 如果节点是独立的
       if (this.config.checkStrictly) {
         this.checked = checked
       } else {
-        // bottom up to unify the calculation of the indeterminate state
+        // 如果当前node选中，则node的所有子孙node也全部选中，否则全部不选中
         this.broadcast('check', checked)
         this.setCheckState(checked)
         this.emit('check')

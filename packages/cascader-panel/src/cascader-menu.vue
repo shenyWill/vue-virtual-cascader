@@ -42,7 +42,7 @@ import CascaderNode from './cascader-node.vue'
 import ElCheckbox from 'element-ui/packages/checkbox'
 
 export default {
-  name: 'ElpCascaderMenu',
+  name: 'VirtualCascaderMenu',
 
   inject: ['panel'],
 

@@ -6,7 +6,7 @@ import { isEqual } from 'element-ui/src/utils/util'
 const stopPropagation = e => e.stopPropagation()
 
 export default {
-  name: 'ElpCascaderNode',
+  name: 'VirtualCascaderNode',
 
   inject: ['panel'],
 
@@ -164,19 +164,19 @@ export default {
 
     renderCheckIcon () {
       return (
-          <i class="el-icon-check elp-cascader-node__prefix"></i>
+          <i class="el-icon-check virtual-cascader-node__prefix"></i>
       )
     },
 
     renderLoadingIcon () {
       return (
-          <i class="el-icon-loading elp-cascader-node__postfix"></i>
+          <i class="el-icon-loading virtual-cascader-node__postfix"></i>
       )
     },
 
     renderExpandIcon () {
       return (
-          <i class="el-icon-arrow-right elp-cascader-node__postfix"></i>
+          <i class="el-icon-arrow-right virtual-cascader-node__postfix"></i>
       )
     },
 
@@ -188,7 +188,7 @@ export default {
           : null
 
       return (
-          <span class="elp-cascader-node__label">{vnode || node.label}</span>
+          <span class="virtual-cascader-node__label">{vnode || node.label}</span>
       )
     }
   },
@@ -230,7 +230,7 @@ export default {
             aria-expanded={inActivePath}
             tabindex={disabled ? null : -1}
             class={{
-              'elp-cascader-node': true,
+              'virtual-cascader-node': true,
               'is-selectable': checkStrictly,
               'in-active-path': inActivePath,
               'in-checked-path': inCheckedPath,
