@@ -261,7 +261,7 @@ export default {
       menus.forEach(menu => {
         const menuElement = menu.$el
         if (menuElement) {
-          const container = menuElement.querySelector('.elp-cascader-menu__wrap')
+          const container = menuElement.querySelector('.virtual-cascader-menu__wrap')
           const activeNode = menuElement.querySelector('.elp-cascader-node.is-active') ||
               menuElement.querySelector('.elp-cascader-node.in-active-path')
           scrollIntoView(container, activeNode)
