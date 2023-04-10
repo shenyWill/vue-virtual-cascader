@@ -1,18 +1,15 @@
 <template>
   <div class="virtual-cascader-menu">
-    <div class="elp-cascader-menu__wrap elp-cascader-menu__list">
-      <div class="elp-search-check">
-        <div v-if="labelAndCheckAllVisible" class="elp-search-check__check">
-          <div v-if="menuLabel">{{menuLabel}}</div>
-          <el-checkbox
-            v-if="checkAllVisible"
-            :value="menuCheckState.checked"
-            :indeterminate="menuCheckState.indeterminate"
-            @change="onMenuCheck"
-          >全选</el-checkbox>
+    <div class="virtual-cascader-menu__wrap">
+      <div v-if="checkAllVisible" class="virtual-search-check__all">
+        <el-checkbox
+          v-if="checkAllVisible"
+          :value="menuCheckState.checked"
+          :indeterminate="menuCheckState.indeterminate"
+          @change="onMenuCheck"
+        >全选</el-checkbox>
         </div>
-      </div>
-      <div v-if="isEmpty" class="elp-cascader-menu__empty-text">
+      <div v-if="isEmpty" class="virtual-cascader-menu__empty-text">
         {{ emptyText }}
       </div>
       <recycle-scroller
@@ -40,7 +37,6 @@
 <script>
 import 'vue-virtual-scroller/dist/vue-virtual-scroller.css'
 import { RecycleScroller } from 'vue-virtual-scroller'
-import { coerceTruthyValueToArray } from 'element-ui/src/utils/util'
 
 import CascaderNode from './cascader-node.vue'
 import ElCheckbox from 'element-ui/packages/checkbox'
@@ -97,18 +93,11 @@ export default {
       if (!this.searchKey) return this.nodes
       return this.nodes.filter(node => node.label.includes(this.searchKey))
     },
-    menuLabel () {
-      let _labels = coerceTruthyValueToArray(this.config.panelLabels)
-      return _labels[this.index]
-    },
     checkAllVisible () {
-      return this.config.multiple && !this.config.lazyMultiCheck && this.config.checkAll
-    },
-    labelAndCheckAllVisible () {
-      return this.menuLabel || this.checkAllVisible
+      return this.config.multiple && !this.config.lazyMultiCheck && this.config.checkAll && !this.isEmpty
     },
     scrollHeight () {
-      const labelAndCheckAllHeight = this.labelAndCheckAllVisible ? 30 : 0
+      const labelAndCheckAllHeight = this.checkAllVisible ? 30 : 0
       return `calc(100% - ${ labelAndCheckAllHeight }px)`
     }
   },
@@ -130,29 +119,6 @@ export default {
   methods: {
     handleExpand (e) {
       this.activeNode = e.target
-    },
-    handleMouseMove (e) {
-      const { activeNode, hoverTimer } = this
-      const { hoverZone } = this.$refs
-
-      if (!activeNode || !hoverZone) return
-
-      if (activeNode.contains(e.target)) {
-        clearTimeout(hoverTimer)
-
-        const { left } = this.$el.getBoundingClientRect()
-        const startX = e.clientX - left
-        const { offsetWidth, offsetHeight } = this.$el
-        const top = activeNode.offsetTop
-        const bottom = top + activeNode.offsetHeight
-
-        hoverZone.innerHTML = `
-          <path style="pointer-events: auto;" fill="transparent" d="M${startX} ${top} L${offsetWidth} 0 V${top} Z" />
-          <path style="pointer-events: auto;" fill="transparent" d="M${startX} ${bottom} L${offsetWidth} ${offsetHeight} V${bottom} Z" />
-        `
-      } else if (!hoverTimer) {
-        this.hoverTimer = setTimeout(this.clearHoverZone, this.panel.config.hoverThreshold)
-      }
     },
     clearHoverZone () {
       const { hoverZone } = this.$refs
