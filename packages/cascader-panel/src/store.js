@@ -55,14 +55,14 @@ export default class Store {
   getNodes () {
     return this.nodes
   }
-
+  // 打平node对象
   getFlattedNodes (leafOnly, cached = true) {
     const cachedNodes = leafOnly ? this.leafNodes : this.flattedNodes
     return cached
       ? cachedNodes
       : flatNodes(this.nodes, leafOnly, this.config.lazyMultiCheck)
   }
-
+  // 通过值获取对应的node对象
   getNodeByValue (value) {
     if (value) {
       const nodes = this.getFlattedNodes(false, !this.config.lazy).

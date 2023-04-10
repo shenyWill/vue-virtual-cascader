@@ -39,15 +39,25 @@ export default {
       ]
     })
     return {
-      // value: ['zhangsan', 'lisi'],
-      value: [['zhangsan', 'lisi']],
+      value: [['zhangsan', 'lisi', 'wangwu']],
+      // value: ['zhangsan', 'lisi', 'wangwu'],
       options: [..._mock.array, {
         label: '张三',
         value: 'zhangsan',
         children: [
           {
             label: 'lisi',
-            value: 'lisi'
+            value: 'lisi',
+            children: [
+              {
+                label: 'wangwu',
+                value: 'wangwu',
+              },
+              {
+                label: '马六',
+                value: 'maliu'
+              }
+            ]
           }
         ]
       }],
@@ -55,7 +65,6 @@ export default {
         checkAll: true,
         multiple: true,
         selectWithExpand: true,
-        panelLabels: [],
         checkStrictly: false,
       },
     }

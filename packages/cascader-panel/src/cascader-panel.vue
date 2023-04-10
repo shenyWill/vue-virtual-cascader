@@ -108,6 +108,7 @@ export default {
 
   mounted () {
     if (!isEmpty(this.value)) {
+      // TODO: 因为watch的时候，checkedValue还是空，所以重置一次选中数据
       this.syncCheckedValue()
     }
   },
@@ -115,11 +116,13 @@ export default {
   methods: {
     initStore () {
       const { config, options } = this
+      // 如果是懒加载
       if (config.lazy && isEmpty(options)) {
         this.lazyLoad()
       } else {
+        // 直接加载
         this.store = new Store(options, config)
-        this.menus = [this.store.getNodes(), ...this.generateExcessMenus(1)]
+        this.menus = [this.store.getNodes()]
         this.syncMenuState()
       }
     },
@@ -130,9 +133,11 @@ export default {
         this.syncMenuState()
       }
     },
+    // 设置menu的状态（也就是所有node的状态）
     syncMenuState () {
       const { multiple, checkStrictly } = this
       this.syncActivePath()
+      // 多选的情况下，设置选中的所有的node的check
       multiple && this.syncMultiCheckState()
       checkStrictly && this.calculateCheckedNodePaths()
       this.$nextTick(this.scrollIntoView)
@@ -146,20 +151,21 @@ export default {
     },
     syncActivePath () {
       const { store, multiple, activePath, checkedValue } = this
-
       if (!isEmpty(activePath)) {
         const nodes = activePath.map(node => this.getNodeByValue(node.getValue()))
         this.expandNodes(nodes)
       } else if (!isEmpty(checkedValue)) {
         const value = multiple ? checkedValue[0] : checkedValue
         const checkedNode = this.getNodeByValue(value) || {}
+        // 过滤掉最后一项（叶子）,最后一项不需要展开
         const nodes = (checkedNode.pathNodes || []).slice(0, -1)
         this.expandNodes(nodes)
       } else {
         this.activePath = []
-        this.menus = [store.getNodes(), ...this.generateExcessMenus(1)]
+        this.menus = [store.getNodes()]
       }
     },
+    // 展开nodes
     expandNodes (nodes) {
       nodes.forEach(node => this.handleExpand(node, true /* silent */))
     },
@@ -173,20 +179,20 @@ export default {
         return checkedNode ? checkedNode.pathNodes : []
       })
     },
+    // 展开
     handleExpand (node, silent) {
       const { activePath } = this
       const { level } = node
       const path = activePath.slice(0, level - 1)
       const menus = this.menus.slice(0, level)
-
+      // 如果不是叶子（最后一层），则加入展开路径，menus也加入下一层
       if (!node.isLeaf) {
         path.push(node)
         menus.push(node.children)
       }
 
       this.activePath = path
-      this.menus = [...menus, ...this.generateExcessMenus(menus.length)]
-
+      this.menus = [...menus]
       if (!silent) {
         const pathValues = path.map(node => node.getValue())
         const activePathValues = activePath.map(node => node.getValue())
@@ -204,7 +210,7 @@ export default {
       if (!node) {
         node = node || { root: true, level: 0 }
         this.store = new Store([], config)
-        this.menus = [this.store.getNodes(), ...this.generateExcessMenus(1)]
+        this.menus = [this.store.getNodes()]
       }
       node.loading = true
       const resolve = dataList => {
@@ -214,7 +220,7 @@ export default {
         node.loaded = true
 
         if (this.loadCount === 0 && this.menus[0] && !this.menus[0].length) {
-          this.menus = [this.store.getNodes(), ...this.generateExcessMenus(1)]
+          this.menus = [this.store.getNodes()]
         }
 
         // dispose default value on lazy load mode
@@ -262,8 +268,8 @@ export default {
         const menuElement = menu.$el
         if (menuElement) {
           const container = menuElement.querySelector('.virtual-cascader-menu__wrap')
-          const activeNode = menuElement.querySelector('.elp-cascader-node.is-active') ||
-              menuElement.querySelector('.elp-cascader-node.in-active-path')
+          const activeNode = menuElement.querySelector('.virtual-cascader-node.is-active') ||
+              menuElement.querySelector('.virtual-cascader-node.in-active-path')
           scrollIntoView(container, activeNode)
         }
       })
@@ -296,10 +302,6 @@ export default {
         this.checkedValue = emitPath ? [] : null
       }
     },
-    generateExcessMenus (size = 0) {
-      const expandPanels = this.config.expandPanels || 1
-      return new Array(expandPanels - size > 0 ? expandPanels - size : 0).fill([])
-    }
   }
 }
 </script>
