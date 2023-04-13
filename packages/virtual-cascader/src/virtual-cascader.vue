@@ -126,7 +126,7 @@ import { isUndefined, isFunction } from 'element-ui/src/utils/types'
 import { isEqual, isEmpty, kebabCase } from 'element-ui/src/utils/util'
 import { addResizeListener, removeResizeListener } from 'element-ui/src/utils/resize-event'
 
-import 'virtual-cascader/packages/theme/cascader.less'
+import 'virtual-cascader/packages/styles/cascader.less'
 import VirtualCascaderPanel from 'virtual-cascader/packages/cascader-panel'
 import { MigratingProps, PopperMixin, InputSizeMap, VirtualProps } from './constant'
 import { debounce } from 'throttle-debounce';

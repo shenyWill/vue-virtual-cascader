@@ -28,7 +28,7 @@ import {
 import Store from './store'
 import { DefaultProps } from './constant'
 import CascaderMenu from './cascader-menu'
-import 'virtual-cascader/packages/theme/cascader-panel.less'
+import 'virtual-cascader/packages/styles/cascader-panel.less'
 
 export default {
   name: 'VirtualCascaderPanel',
@@ -223,7 +223,6 @@ export default {
           this.menus = [this.store.getNodes()]
         }
 
-        // dispose default value on lazy load mode
         if (Array.isArray(this.checkedValue)) {
           const nodeValue = this.checkedValue[this.loadCount++]
           const valueKey = this.config.value

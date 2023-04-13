@@ -13,8 +13,6 @@ const DefaultProps = {
   checkStrictly: false,
   expandTrigger: 'click', // 展开的动作 click | hover
   hoverThreshold: 500,
-  selectWithExpand: true, // when node is selectable, click event trigger expand event
-  lazyMultiCheck: false, // effective when lazy===true&checkStrictly===false
 }
 
 export {

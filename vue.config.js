@@ -6,8 +6,9 @@ const { name } = require('./package.json')
 module.exports = defineConfig({
   transpileDependencies: true,
   productionSourceMap: false,
+  publicPath: './',
   chainWebpack: config => {
-    config.resolve.alias.set('@', resolve('examples')).set('virtual-cascader/packages', resolve('packages'));
+    config.resolve.alias.set('@', resolve('demos')).set('virtual-cascader/packages', resolve('packages'));
     config.plugin('define').tap(args => {
       args[0]['process.env'].LIB_NAME = JSON.stringify(name);
       return args;
@@ -15,7 +16,7 @@ module.exports = defineConfig({
   },
   pages: {
     index: {
-      entry: 'examples/main.js',
+      entry: 'demos/main.js',
       template: 'public/index.html',
       filename: 'index.html',
     }
