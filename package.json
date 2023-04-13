@@ -14,9 +14,9 @@
   },
   "dependencies": {
     "core-js": "^3.8.3",
+    "element-ui": "^2.15.13",
     "throttle-debounce": "^5.0.0",
-    "vue-virtual-scroller": "^1.1.2",
-    "element-ui": "^2.15.13"
+    "vue-virtual-scroller": "^1.1.2"
   },
   "peerDependencies": {
     "vue": "^2.6.14"
@@ -35,6 +35,7 @@
     "less": "^4.0.0",
     "less-loader": "^8.0.0",
     "mockjs": "^1.1.0",
+    "standard-version": "^9.5.0",
     "vue-template-compiler": "^2.6.14"
   }
 }
