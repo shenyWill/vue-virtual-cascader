@@ -291,6 +291,7 @@ export default {
             : [this.getNodeByValue(checkedValue)]
       }
     },
+    // 删除选中的nodes
     clearCheckedNodes () {
       const { config, leafOnly } = this
       const { multiple, emitPath } = config
