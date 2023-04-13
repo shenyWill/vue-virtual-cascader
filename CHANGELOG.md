@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.2.0](https://github.com/shenyWill/vue-virtual-cascader/compare/v1.1.18...v1.2.0) (2023-04-13)
+
+
+### Features
+
+* 修改目录结构 ([0f0da77](https://github.com/shenyWill/vue-virtual-cascader/commit/0f0da7790104478716a3a047e9ec7e2133cf87d1))
+
+
+### Documentation
+
+* 修改README ([406629c](https://github.com/shenyWill/vue-virtual-cascader/commit/406629cdbf531c55abb3e290126192fa9b013a3c))
+
 ### [1.1.18](https://github.com/shenyWill/vue-virtual-cascader/compare/v1.1.17...v1.1.18) (2023-04-13)
 
 
