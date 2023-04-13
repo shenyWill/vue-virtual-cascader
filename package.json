@@ -1,6 +1,6 @@
 {
   "name": "vue-virtual-cascader",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "private": false,
   "main": "dist/vue-virtual-cascader.umd.min.js",
   "umd:main": "dist/vue-virtual-cascader.umd.min.js",
@@ -10,7 +10,8 @@
     "serve": "vue-cli-service serve --force",
     "build": "vue-cli-service build",
     "build:lib": "vue-cli-service build --target lib --name vue-virtual-cascader packages/index.js",
-    "lint": "vue-cli-service lint"
+    "lint": "vue-cli-service lint",
+    "release": "standard-version"
   },
   "dependencies": {
     "core-js": "^3.8.3",
