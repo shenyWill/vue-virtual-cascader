@@ -36,11 +36,8 @@ export default class Store {
     for (let i = 0, length = nodeDataList.length; i < length; i++) {
       const node = new Node(nodeDataList[i], this.config, parentNode)
 
-      // Skip if the node already exists
       const _idx = children.findIndex(item => item.value === node.value)
       if (_idx > -1) {
-        // replace the old node when the value repeats
-        // children.splice(_idx, 1, node)
         break
       }
 

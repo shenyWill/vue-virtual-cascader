@@ -223,7 +223,6 @@ export default {
           this.menus = [this.store.getNodes()]
         }
 
-        // dispose default value on lazy load mode
         if (Array.isArray(this.checkedValue)) {
           const nodeValue = this.checkedValue[this.loadCount++]
           const valueKey = this.config.value

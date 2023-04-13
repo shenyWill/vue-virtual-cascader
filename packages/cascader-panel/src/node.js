@@ -24,7 +24,7 @@ export default class Node {
     this.path = this.pathNodes.map(node => node.value)
     this.pathLabels = this.pathNodes.map(node => node.label)
 
-    // lazy load
+    // 懒加载
     this.loading = false
     this.loaded = false
   }

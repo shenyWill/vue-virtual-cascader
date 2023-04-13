@@ -60,12 +60,10 @@ export default {
 
       if (config.lazy && !node.loaded) {
         panel.lazyLoad(node, () => {
-          // do not use cached leaf value here, invoke this.isLeaf to get new value.
           const { isLeaf } = this
 
           if (!isLeaf) this.handleExpand()
           if (multiple) {
-            // if leaf sync checked state, else clear checked state
             const checked = isLeaf ? node.checked : false
             this.handleMultiCheckChange(checked)
           }
@@ -141,11 +139,10 @@ export default {
           ></el-checkbox>
       )
     },
-
+    // 当单选并且父子不关联的情况下渲染radio
     renderRadio () {
       let { checkedValue, value, isDisabled } = this
 
-      // to keep same reference if value cause radio's checked state is calculated by reference comparision;
       if (isEqual(value, checkedValue)) {
         value = checkedValue
       }
@@ -157,7 +154,6 @@ export default {
               disabled={isDisabled}
               onChange={this.handleCheckChange}
               nativeOnClick={stopPropagation}>
-            {/* add an empty element to avoid render label */}
             <span></span>
           </el-radio>
       )
