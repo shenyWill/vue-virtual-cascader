@@ -90,7 +90,7 @@ export default {
     },
     // 是否有全选
     checkAllVisible () {
-      return this.config.multiple && !this.config.lazyMultiCheck && this.config.checkAll && !this.isEmpty
+      return this.config.multiple && this.config.checkAll && !this.isEmpty
     },
     // 滚动高度
     scrollHeight () {

@@ -6,9 +6,9 @@
 
 <script>
 import Mock from 'mockjs'
-import Cascader from './../dist/vue-virtual-cascader.umd.min.js';
-import './../dist/vue-virtual-cascader.css';
-// import Cascader from 'virtual-cascader/packages';
+// import Cascader from './../dist/vue-virtual-cascader.umd.min.js';
+// import './../dist/vue-virtual-cascader.css';
+import Cascader from 'virtual-cascader/packages';
 const { VirtualCascader } = Cascader;
 
 
@@ -39,8 +39,8 @@ export default {
       ]
     })
     return {
-      // value: [['zhangsan', 'lisi', 'wangwu']],
-      value: ['zhangsan', 'lisi', 'wangwu'],
+      value: [['zhangsan', 'lisi', 'wangwu']],
+      // value: ['zhangsan', 'lisi', 'wangwu'],
       options: [..._mock.array, {
         label: '张三',
         value: 'zhangsan',
@@ -63,9 +63,8 @@ export default {
       }],
       props: {
         checkAll: true,
-        multiple: false,
-        selectWithExpand: true,
-        checkStrictly: false,
+        multiple: true,
+        checkStrictly: true,
       },
     }
   },

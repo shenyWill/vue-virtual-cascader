@@ -2,14 +2,14 @@ import { coerceTruthyValueToArray, valueEquals } from 'element-ui/src/utils/util
 import Node from './node'
 
 // 打平nodes
-const flatNodes = (data, leafOnly, lazyMultiCheck) => data.reduce((result, node) => {
+const flatNodes = (data, leafOnly) => data.reduce((res, node) => {
   if (node.isLeaf) {
-    result.push(node)
+    res.push(node)
   } else {
-    (!leafOnly || lazyMultiCheck) && result.push(node)
-    result = result.concat(flatNodes(node.children, leafOnly, lazyMultiCheck))
+    !leafOnly && res.push(node)
+    res = res.concat(flatNodes(node.children, leafOnly))
   }
-  return result
+  return res
 }, [])
 
 export default class Store {
@@ -61,7 +61,7 @@ export default class Store {
     const cachedNodes = leafOnly ? this.leafNodes : this.flattedNodes
     return cached
       ? cachedNodes
-      : flatNodes(this.nodes, leafOnly, this.config.lazyMultiCheck)
+      : flatNodes(this.nodes, leafOnly)
   }
   // 通过值获取对应的node对象
   getNodeByValue (value) {

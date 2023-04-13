@@ -78,7 +78,7 @@ export default {
     handleCheckChange () {
       const { panel, value, node } = this
       panel.handleCheckChange(value)
-      if (panel.config.selectWithExpand) panel.handleExpand(node)
+      panel.handleExpand(node)
     },
 
     handleMultiCheckChange (checked) {
@@ -127,8 +127,8 @@ export default {
         nativeOn: {}
       }
 
-      // when every node is selectable, click event should not trigger expand event.
-      if (config.checkStrictly || config.lazyMultiCheck) {
+      // 当多选的时候，并且父子节点不强关联，则不展开子节点
+      if (config.checkStrictly) {
         events.nativeOn.click = stopPropagation
       }
 
