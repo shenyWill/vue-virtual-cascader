@@ -1,6 +1,6 @@
 {
   "name": "vue-virtual-cascader",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "private": false,
   "main": "dist/vue-virtual-cascader.umd.min.js",
   "umd:main": "dist/vue-virtual-cascader.umd.min.js",
