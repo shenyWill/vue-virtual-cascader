@@ -39,8 +39,8 @@ export default {
       ]
     })
     return {
-      value: [['zhangsan', 'lisi', 'wangwu']],
-      // value: ['zhangsan', 'lisi', 'wangwu'],
+      // value: [['zhangsan', 'lisi', 'wangwu']],
+      value: ['zhangsan', 'lisi', 'wangwu'],
       options: [..._mock.array, {
         label: '张三',
         value: 'zhangsan',
@@ -63,9 +63,9 @@ export default {
       }],
       props: {
         checkAll: true,
-        multiple: true,
+        multiple: false,
         selectWithExpand: true,
-        checkStrictly: false,
+        checkStrictly: true,
       },
     }
   },

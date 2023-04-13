@@ -99,6 +99,7 @@ export default {
       if (multiple) {
         return this.renderCheckbox(h)
       } else if (checkStrictly) {
+        // 当不是多选并且父子层级隔离的时候，需要使用radio
         return this.renderRadio(h)
       } else if (isLeaf && isChecked) {
         return this.renderCheckIcon(h)

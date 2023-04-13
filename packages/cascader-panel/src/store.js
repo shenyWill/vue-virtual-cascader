@@ -1,6 +1,7 @@
 import { coerceTruthyValueToArray, valueEquals } from 'element-ui/src/utils/util'
 import Node from './node'
 
+// 打平nodes
 const flatNodes = (data, leafOnly, lazyMultiCheck) => data.reduce((result, node) => {
   if (node.isLeaf) {
     result.push(node)

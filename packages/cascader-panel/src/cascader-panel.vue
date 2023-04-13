@@ -253,9 +253,7 @@ export default {
       config.lazyLoad(node, resolve)
     },
 
-    /**
-     * public methods
-     */
+    // 计算多选情况下选中的数据
     calculateMultiCheckedValue () {
       this.checkedValue = this.getCheckedNodes(this.leafOnly).map(node => node.getValueByOption())
     },
@@ -281,6 +279,7 @@ export default {
       const cached = !this.config.lazy
       return this.store.getFlattedNodes(leafOnly, cached)
     },
+    // 获取选中的nodes
     getCheckedNodes (leafOnly) {
       const { checkedValue, multiple } = this
       if (multiple) {
@@ -296,6 +295,7 @@ export default {
       const { config, leafOnly } = this
       const { multiple, emitPath } = config
       if (multiple) {
+        // 循环所有nodes，将所有node置为不选中
         this.getCheckedNodes(leafOnly).filter(node => !node.isDisabled).forEach(node => node.doCheck(false))
         this.calculateMultiCheckedValue()
       } else {

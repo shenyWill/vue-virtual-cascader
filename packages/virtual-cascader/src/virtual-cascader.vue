@@ -10,7 +10,6 @@
       @mouseover="() => inputHover = true"
       @mouseleave="() => inputHover = false"
       @click="() => toggleDropDownVisible(true)">
-    <!--  eslint-disable  -->
     <el-input
         ref="input"
         v-model="presentText"
@@ -422,13 +421,16 @@ export default {
       const targetNode = this.filterList[index]
       if (multiple) {
         const { checked } = targetNode
+        // 反转当前选择的node
         targetNode.doCheck(!checked)
+        // 重新计算选中的数据
         this.panel.calculateMultiCheckedValue()
       } else {
         this.checkedValue = targetNode.getValueByOption()
         this.toggleDropDownVisible(false)
       }
     },
+    // 删除tag
     deleteTag (index) {
       const { checkedValue } = this
       const val = checkedValue[index]
