@@ -21,23 +21,6 @@ module.exports = defineConfig({
     }
   },
   configureWebpack: config => {
-    // entry: './packages/index.js',
-    // output: {
-    //   filename: 'vue-virtual-cascader.[name].js',
-    //   library: 'VueVirtualCascader',
-    //   libraryTarget: 'umd',
-    // },
-    // optimization: {
-    //   splitChunks: {
-    //     cacheGroups: {
-    //       vendor: {
-    //         test: /[\\/]node_modules[\\/]element-ui/,
-    //         name: 'element',
-    //         chunks: 'all',
-    //       },
-    //     },
-    //   },
-    // },
       if (config.mode === 'production') {
         config.externals = {
           'element-ui': {
