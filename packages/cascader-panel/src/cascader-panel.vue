@@ -28,7 +28,7 @@ import {
 import Store from './store'
 import { DefaultProps } from './constant'
 import CascaderMenu from './cascader-menu'
-import 'virtual-cascader/packages/theme/cascader-panel.less'
+import 'virtual-cascader/packages/styles/cascader-panel.less'
 
 export default {
   name: 'VirtualCascaderPanel',
