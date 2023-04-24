@@ -1,0 +1,72 @@
+{
+  "name": "vue-virtual-cascader",
+  "version": "1.3.13",
+  "private": false,
+  "main": "dist/vue-virtual-cascader.umd.min.js",
+  "umd:main": "dist/vue-virtual-cascader.umd.min.js",
+  "author": "shenyuan.will@bytedance.com",
+  "license": "MIT",
+  "description": "支持虚拟滚动的vue2版本的cascader",
+  "keywords": [
+    "vue",
+    "cascader",
+    "virtual"
+  ],
+  "scripts": {
+    "serve": "vue-cli-service serve --force",
+    "build": "vue-cli-service build",
+    "build:lib": "vue-cli-service build --target lib --name vue-virtual-cascader packages/index.js",
+    "lint": "vue-cli-service lint",
+    "release": "standard-version"
+  },
+  "dependencies": {
+    "core-js": "^3.8.3",
+    "element-ui": "^2.15.13",
+    "throttle-debounce": "^5.0.0",
+    "vue-virtual-scroller": "^1.1.2"
+  },
+  "peerDependencies": {
+    "vue": "^2.6.14"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.12.16",
+    "@babel/eslint-parser": "^7.12.16",
+    "@vue/cli-plugin-babel": "~5.0.0",
+    "@vue/cli-plugin-eslint": "~5.0.0",
+    "@vue/cli-plugin-router": "~5.0.0",
+    "@vue/cli-plugin-vuex": "~5.0.0",
+    "@vue/cli-service": "~5.0.0",
+    "babel-plugin-component": "^1.1.1",
+    "eslint": "^7.32.0",
+    "eslint-plugin-vue": "^8.0.3",
+    "less": "^4.0.0",
+    "less-loader": "^8.0.0",
+    "mockjs": "^1.1.0",
+    "standard-version": "^9.5.0",
+    "vue-template-compiler": "^2.6.14"
+  },
+  "standard-version": {
+    "types": [
+      {
+        "type": "feat",
+        "section": "Features"
+      },
+      {
+        "type": "fix",
+        "section": "Bug Fixes"
+      },
+      {
+        "type": "perf",
+        "section": "Performance Improvements"
+      },
+      {
+        "type": "revert",
+        "section": "Reverts"
+      },
+      {
+        "type": "docs",
+        "section": "Documentation"
+      }
+    ]
+  }
+}
