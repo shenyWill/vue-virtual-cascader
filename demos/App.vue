@@ -10,12 +10,12 @@
     <!-- <template #input>
       <div>{{ 111 }}</div>
     </template> -->
-    <template #empty>
+    <!-- <template #empty>
       <div>{{ 111 }}</div>
-    </template>
-    <template #default="{ node }">
+    </template> -->
+    <!-- <template #default="{ node }">
       <div>{{ node.data }}</div>
-    </template>
+    </template> -->
     </VirtualCascader>
   </div>
 </template>
@@ -96,6 +96,11 @@ export default {
   display: grid;
   place-items: flex-start;
   margin: 60px;
+}
+:root {
+  --theme-color: red;
+  --border-color: green;
+  --txt-color: blue;
 }
 </style>
 
