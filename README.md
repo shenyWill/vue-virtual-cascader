@@ -74,3 +74,15 @@ export default {
 | --- | --- | --- |
 | multiple | props -> multiple | ele中多选时props中的参数，不是直接绑定在组件上 |
 | independent | props -> checkStrictly | ele中独立模式也是在props中，并且属性名有变化 |
+
+### 主题定制
+
+> 为了更好的扩展，组件主要样式使用css变量开发，暴露变量包括：
+
+```css
+/* 组件主题色 */
+--theme-color: #1251ff;
+/* 组件边框颜色 */
+--border-color: #e9e9ed;
+/* 组件文本颜色 */
+--txt-color: #323335;
