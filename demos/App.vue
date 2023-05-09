@@ -1,20 +1,21 @@
 <template>
   <div id="app">
-    <VirtualCascader v-model="value" :props="props" separator=" | " :options="options" size="small" collapse-tags filterable clearable style="width: 300px">
-    <template #prefix>
+    <div>{{ value }}</div>
+    <VirtualCascader v-model="value" :props="props" separator=" | " :options="options" collapse-tags filterable clearable style="width: 300px">
+    <!-- <template #prefix>
       <span style="color: red">sss</span>
     </template>
     <template #suffix>
       <span style="color: green" @click.stop="test">ddddddd</span>
     </template>
-    <!-- <template #input>
+    <template #input>
       <div>{{ 111 }}</div>
-    </template> -->
-    <!-- <template #empty>
+    </template>
+    <template #empty>
       <div>{{ 111 }}</div>
-    </template> -->
-    <!-- <template #default="{ node }">
-      <div>{{ node.data }}</div>
+    </template>
+    <template #default>
+      <div>大萨达撒旦撒打算大萨达稍等奥德赛啊奥迪阿萨德阿萨德</div>
     </template> -->
     </VirtualCascader>
   </div>
@@ -26,6 +27,7 @@ import Cascader from './../dist/vue-virtual-cascader.umd.min.js';
 import './../dist/vue-virtual-cascader.css';
 // import Cascader from 'virtual-cascader/packages';
 const { VirtualCascader } = Cascader;
+// import { getRender } from './const.jsx';
 
 export default {
   name: 'APP',
@@ -54,8 +56,8 @@ export default {
       ]
     })
     return {
-      value: [['zhangsan', 'lisi', 'wangwu']],
-      // value: ['zhangsan', 'lisi', 'wangwu'],
+      // value: [['zhangsan', 'lisi', 'wangwu']],
+      value: ['zhangsan', 'lisi', 'wangwu'],
       options: [..._mock.array, {
         label: '张三张三张三张三张三张三张三张三张三张三张三张三张三',
         value: 'zhangsan',
@@ -78,7 +80,7 @@ export default {
       }],
       props: {
         checkAll: true,
-        multiple: true,
+        // multiple: true,
         checkStrictly: false,
       },
     }
@@ -87,6 +89,42 @@ export default {
     test() {
       console.log(123)
     }
+  },
+  /* eslint-disable */
+  render(h) {
+    // return getRender(h, this.props, this.options);
+    // return (
+    //   <VirtualCascader value={this.value} props={this.props} options={this.options} collapse-tags filterable clearable style="width: 300px"></VirtualCascader>
+    // );
+    const slotContent = h('div', { slot: 'prefix' }, '123edc');
+    return <div>
+      {h(
+      VirtualCascader,
+      {
+        props: {
+          props: this.props,
+          options: this.options,
+          filterable: true,
+          value: this.value,
+        },
+        style: {
+          width: '300px'
+        },
+        scopedSlots: {
+          default: () => h('div', 123),
+        },
+        on: {
+          change: (param) => {
+            console.log(param);
+          }
+        }
+      },
+      [slotContent]
+    )}
+    </div>
+    return (
+      <div>1123</div>
+    )
   }
 }
 </script>
@@ -97,10 +135,10 @@ export default {
   place-items: flex-start;
   margin: 60px;
 }
-:root {
-  --theme-color: red;
-  --border-color: green;
-  --txt-color: blue;
-}
+// :root {
+//   --theme-color: red;
+//   --border-color: green;
+//   --txt-color: blue;
+// }
 </style>
 
