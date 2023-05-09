@@ -105,12 +105,25 @@
           class="virtual-cascader__filter-panel"
           view-class="virtual-cascader__filter-list">
           <template v-if="filterList.length">
-            <el-checkbox 
-              v-for="(item, index) in filterList"
-              class="virtual-cascader__filter-item"
-              :key="item.uid" :value="item.checked"
-              @change="handleFilterClick(index)"
-            > {{ item.text }}</el-checkbox>
+            <template v-if="multiple">
+              <el-checkbox 
+                v-for="(item, index) in filterList"
+                class="virtual-cascader__filter-item"
+                :key="item.uid" 
+                :value="item.checked"
+                @change="handleFilterClick(index)"
+              > {{ item.text }}</el-checkbox>
+            </template>
+            <template v-else>
+              <div 
+                v-for="(item, index) in filterList"
+                :class="['virtual-cascader__filter-item', item.checked && 'is-checked']"
+                :key="item.uid"
+                @click="handleFilterClick(index)"
+              >
+                {{ item.text }}
+              </div>
+            </template>
           </template>
           <slot v-else name="empty">
             <li class="virtual-cascader__empty-text">{{ emptyText }}</li>
@@ -210,7 +223,6 @@ export default {
       return this.$refs.panel
     },
     hasInputSlot() {
-      console.log(this.$slots);
       return !!this.$slots.input
     },
   },
