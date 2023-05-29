@@ -17,7 +17,7 @@
         :readonly="true"
         :disabled="isDisabled"
         :validate-event="false"
-        :placeholder="placeholder"
+        :placeholder="hasInputSlot ? '' : placeholder"
         :class="{ 'is-focus': dropDownVisible, 'is-plus-suffix': $slots.suffix }"
         @focus="handleFocus"
         @blur="handleBlur">
@@ -47,7 +47,7 @@
       </template>
     </el-input>
 
-    <div v-if="multiple" :class="{ 'virtual-cascader__tags': true , 'is-prefix': $slots.prefix, 'is-suffix': $slots.suffix }">
+    <div v-if="multiple || hasInputSlot" :class="{ 'virtual-cascader__tags': true , 'is-prefix': $slots.prefix, 'is-suffix': $slots.suffix }">
       <slot v-if="hasInputSlot" name="input"></slot>
       <el-tag
         v-else
@@ -368,6 +368,11 @@ export default {
     },
     // 计算展示文本
     computePresentText () {
+      // 有slot input的时候，展示文本置空
+      if (this.hasInputSlot) {
+        this.presentText = '';
+        return;
+      }
       const { checkedValue, config } = this
       if (!isEmpty(checkedValue)) {
         const node = this.panel.getNodeByValue(checkedValue)

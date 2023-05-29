@@ -63,6 +63,7 @@ export default {
 | --- | --- |
 | prefix | 输入框头部内容 |
 | suffix | 输入框尾部内容 |
+| input  | 自定义选择输入框上的文本内容 |
 | default | 自定义备选项的节点内容，参数为 { node, data }，分别为当前节点的 Node 对象和数据 |
 
 

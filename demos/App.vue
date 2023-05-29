@@ -2,7 +2,7 @@
   <div id="app">
     <div>{{ value }}</div>
     <VirtualCascader v-model="value" :props="props" separator=" | " :options="options" collapse-tags filterable clearable style="width: 300px">
-    <!-- <template #prefix>
+    <template #prefix>
       <span style="color: red">sss</span>
     </template>
     <template #suffix>
@@ -16,7 +16,7 @@
     </template>
     <template #default>
       <div>大萨达撒旦撒打算大萨达稍等奥德赛啊奥迪阿萨德阿萨德</div>
-    </template> -->
+    </template>
     </VirtualCascader>
   </div>
 </template>
